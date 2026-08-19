@@ -1,12 +1,14 @@
 # UltraIR
 
-Official PyTorch implementation of **UltraIR**, the foundation model introduced
+Official implementation of **UltraIR**, the foundation model introduced
 in **[Simulation-to-real transfer learning for infrared spectroscopic chemical
 sensing and analysis from molecules to complex samples](https://arxiv.org/abs/2608.13341)**.
 
-[![arXiv](https://img.shields.io/badge/arXiv-2608.13341-b31b1b.svg)](https://arxiv.org/abs/2608.13341)
-[![Hugging Face](https://img.shields.io/badge/Hugging_Face-Checkpoints-ffd21e.svg)](https://huggingface.co/yusentan/UltraIR)
-[![Data documentation](https://img.shields.io/badge/Data-Documentation-4c6b50.svg)](data/README.md)
+<p align="center">
+<a href="https://arxiv.org/abs/2608.13341"><img src="https://img.shields.io/badge/arXiv-2608.13341-b31b1b.svg" alt="arXiv"></a>
+<a href="https://huggingface.co/yusentan/UltraIR"><img src="https://img.shields.io/badge/Hugging_Face-Checkpoints-ffd21e.svg" alt="Hugging Face checkpoints"></a>
+<a href="data/README.md"><img src="https://img.shields.io/badge/Data-Documentation-4c6b50.svg" alt="Data documentation"></a>
+</p>
 
 This repository provides the model implementations, pretraining pipeline,
 downstream training and evaluation runner, task configurations, data
@@ -74,9 +76,6 @@ be selected by its full name or initialism through `--task`.
 
 ## Repository layout
 
-<details>
-<summary>View the repository tree</summary>
-
 ```text
 UltraIR/
   assets/figures/          # framework figure used in this README
@@ -102,8 +101,6 @@ UltraIR/
   requirements.txt         # Python dependency list
   setup.py                 # package metadata and editable-install entry point
 ```
-
-</details>
 
 ## Installation
 
@@ -193,9 +190,6 @@ packaged train/validation/test arrays. Start with
 use the task-specific document for exact filenames, shapes, label order,
 normalization, and preparation commands:
 
-<details>
-<summary>View task-specific data documentation</summary>
-
 | Task | Data documentation |
 | --- | --- |
 | Functional-group prediction | [`data/functional_group_prediction/README.md`](data/functional_group_prediction/README.md) |
@@ -210,8 +204,6 @@ normalization, and preparation commands:
 | Microplastics classification | [`data/microplastics_classification/README.md`](data/microplastics_classification/README.md) |
 | Soil property prediction | [`data/soil_property_prediction/README.md`](data/soil_property_prediction/README.md) |
 | Pretraining | [`data/pretraining/README.md`](data/pretraining/README.md) |
-
-</details>
 
 ## Quick start with demo data
 
