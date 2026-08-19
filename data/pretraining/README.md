@@ -8,7 +8,7 @@ pretraining from public source archives and generated spectra.
 The four public simulated-data sources are:
 
 1. The newly generated UltraIR molecular-dynamics simulated IR dataset:
-   [Hugging Face: `yusentan/UltraIR`](https://huggingface.co/datasets/yusentan/UltraIR)
+   [Hugging Face: `yusentan/UltraIR`](https://huggingface.co/yusentan/UltraIR)
 2. The simulated IR dataset from IRtoMol:
    [Zenodo record 7928396](https://zenodo.org/records/7928396)
 3. The simulated IR dataset from the multimodal spectroscopy dataset:
