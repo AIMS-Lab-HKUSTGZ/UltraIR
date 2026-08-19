@@ -466,8 +466,8 @@ and use `--data-root` when those reference arrays are outside the repository.
 
 We thank our collaborators for valuable discussions on infrared spectroscopy,
 chemical sensing, and experimental validation. We gratefully acknowledge
-funding and institutional support from The Hong Kong University of Science and
-Technology (Guangzhou) (HKUST(GZ)). We also thank the State Key Laboratory of
+funding and institutional support from **The Hong Kong University of Science
+and Technology (Guangzhou) (HKUST(GZ))**. We also thank the State Key Laboratory of
 Chemo and Biosensing at the College of Chemistry and Chemical Engineering,
 Hunan University, for providing the experimental IR data supporting the
 medicinal-herb geographic-origin traceability and constituent quantification
