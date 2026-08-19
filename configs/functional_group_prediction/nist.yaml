@@ -1,0 +1,45 @@
+seed: 42
+device: cuda
+use_bf16: true
+data:
+  root: data/functional_group_prediction
+  layout: fold_directories
+  dataset: nist
+  file_pattern: "{dataset}_fold-{fold}_{split}_{filename}"
+  kfold: 5
+  default_fold: demo
+  splits: {train: train, valid: valid, test: test}
+  ir_name: ir_norm.npy
+loader: {batch_size: 128, num_workers: 8, pin_memory: true, drop_last: true}
+run:
+  mode: train_eval
+  method_name: ultrair_pretrained_nist
+  init_ckpt: checkpoints/pretraining/ultrair_pretraining_general_epoch5.pt
+  ckpt_tag: last
+train:
+  epochs: 150
+  lr: 0.0001
+  weight_decay: 0.01
+  save_root: checkpoints
+  save_best: true
+  save_last: true
+  scheduler: {warmup_epochs: 5, eta_min: 0.00001}
+results: {root: results}
+model:
+  name: ultrairclassifier
+  args: &ultrair_model
+    signal_size: 1792
+    d_model: 1024
+    patch_len: 16
+    n_heads: 16
+    num_global_layers: 8
+    dropout: 0.1
+    head_dropout: 0.4
+task:
+  name: functional_group_prediction
+  args:
+    threshold_search: {enabled: true, grid_min: 0.05, grid_max: 0.95, grid_steps: 19, metric: micro_f1}
+augment:
+  enabled: true
+  path: ../aug.yaml
+  legacy_semantics: true

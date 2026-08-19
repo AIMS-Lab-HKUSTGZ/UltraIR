@@ -1,0 +1,32 @@
+seed: 42
+device: cuda
+use_bf16: true
+data:
+  root: data/targeted_fractional_contribution_estimation
+  layout: fold_directories
+  dataset: sdbs
+  file_pattern: "{dataset}_fold-{fold}_{split}_{filename}"
+  kfold: 5
+  default_fold: 1
+  splits: {train: train, valid: valid, test: test}
+  ir_name: mixture_set.npy
+loader: {batch_size: 128, num_workers: 8, pin_memory: true}
+run: {mode: train_eval, method_name: ultrair_pretrained_sdbs, init_ckpt: checkpoints/pretraining/ultrair_pretraining_general_epoch5.pt, ckpt_tag: best}
+train:
+  epochs: 20
+  lr: 0.0001
+  weight_decay: 0.01
+  save_root: checkpoints
+  save_best: true
+  save_last: true
+  best_selector: overall.rmse
+  best_mode: min
+  scheduler: {warmup_epochs: 3, eta_min: 0.00001}
+results: {root: results}
+model:
+  name: ultra_pair_regressor
+  args: {signal_size: 1792, d_model: 1024, patch_len: 16, n_heads: 16, num_global_layers: 8, dropout: 0.1, head_dropout: 0.2, input_fusion_hidden: 16, pair_hidden_dim: 384, pair_dropout: 0.1, joint_hidden_dim: 512, joint_num_heads: 8, joint_num_layers: 2, freq_hidden_dim: 160}
+task:
+  name: targeted_fractional_contribution_estimation
+  args: {label_file: mixture_ref_weight.npy, ref_idx_file: mixture_ref_idx.npy, grouped_train_sampling: true, sampler_seed: 42}
+augment: {enabled: true, path: ../aug.yaml}

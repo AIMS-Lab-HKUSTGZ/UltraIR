@@ -1,0 +1,63 @@
+seed: 42
+device: cuda
+use_bf16: true
+data:
+  root: data/pretraining
+  format: npy
+  signal_size: 1792
+  split_strategy: modulo
+  split_modulo: 62
+  valid_mod: 0
+  test_mod: 1
+  splits:
+    train: train_indices.npy
+    valid: valid_indices.npy
+    test: test_indices.npy
+loader:
+  batch_size: 128
+  batch_mode: similarity
+  similarity_bucket_keys: null
+  similarity_seed: 42
+  similarity_num_keys: 3
+  similarity_bitcount_bin_size: 8
+  num_workers: 2
+  pin_memory: true
+  persistent_workers: true
+model:
+  encoder:
+    d_model: 1024
+    patch_len: 16
+    n_heads: 16
+    num_global_layers: 8
+    dropout: 0.05
+    head_dropout: 0.1
+  fingerprint_head: {proj_dim: 512}
+  wavelet_head: {wavelet: db4, level: 4, hidden_dim: 1024, bottleneck_dim: 256, dropout: 0.0}
+augment:
+  shared:
+    add_noise: {p: 0.3, target_snr_db: [15, 30]}
+    shift_lr: {p: 0.25, shift_p: [0.001, 0.006]}
+    shift_ud: {p: 0.25, shift_p: [0.003, 0.04]}
+    mask_zeros:
+      p: 0.8
+      num_blocks: [3, 7]
+      small_block_cm: [8, 40]
+      block_cm: [30, 160]
+      large_block_cm: [120, 260]
+      small_block_prob: 0.6
+      large_block_prob: 0.15
+      wavenumber_range: [400, 4000]
+loss:
+  weights: {reconstruction: 50.0, fingerprint: 0.2, functional_group: 1.25}
+  reconstruction: {coeff_weight: 0.2, recon_weight: 0.8, masked_weight: 3.0}
+  fingerprint: {student_temperature: 0.1, target_temperature: 0.05, symmetric: true}
+train:
+  epochs: 5
+  lr: 0.0001
+  weight_decay: 0.01
+  warmup_ratio: 0.05
+  min_lr_ratio: 0.1
+  grad_clip: 1.0
+  save_dir: checkpoints/pretraining
+metrics:
+  embedding_spearman: {enabled: true, max_pairs: 500000, max_eval_batches: 200, seed: 42}

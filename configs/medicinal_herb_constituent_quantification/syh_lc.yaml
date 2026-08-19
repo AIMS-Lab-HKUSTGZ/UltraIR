@@ -1,0 +1,42 @@
+seed: 42
+device: cuda
+use_bf16: true
+data:
+  root: data/medicinal_herb_constituent_quantification
+  layout: fold_directories
+  dataset: syh_lc
+  file_pattern: "{dataset}_fold-{fold}_{split}_{filename}"
+  kfold: 5
+  default_fold: demo
+  splits: {train: train, valid: valid, test: test}
+  ir_name: syh_lc_ir.npy
+  spectral_preprocess: {enable: true, steps: [transmission_percent_to_absorbance, per_spectrum_minmax]}
+  spectral_standardize: {enable: true, eps: 0.000001}
+loader: {batch_size: 8, num_workers: 4, pin_memory: true, persistent_workers: true, drop_last: false}
+run: {mode: train_eval, method_name: ultrair_pretrained_syh_lc, init_ckpt: checkpoints/pretraining/ultrair_pretraining_general_epoch1.pt, ckpt_tag: best}
+train:
+  epochs: 150
+  lr: 0.0004
+  weight_decay: 0.01
+  grad_clip_norm: 1.0
+  save_root: checkpoints
+  save_best: true
+  save_last: true
+  best_selector: overall.r2
+  best_mode: max
+  scheduler: {warmup_epochs: 5, eta_min: 0.00001}
+results: {root: results}
+model:
+  name: ultrairclassifier
+  args: {signal_size: 1792, d_model: 1024, patch_len: 16, n_heads: 16, num_global_layers: 8, dropout: 0.1, head_dropout: 0.4}
+task:
+  name: medicinal_herb_constituent_quantification
+  args:
+    label_file: syh_lc_labels.npy
+    property_names: [Coniferyl aldehyde, quercetin, kaempferol, Luteolin]
+    stats_mode: per_fold_train
+    target_normalization: standard
+    prediction_activation: linear
+    loss: smooth_l1
+    loss_beta: 0.01
+augment: {enabled: false, path: ../aug.yaml, legacy_semantics: true}

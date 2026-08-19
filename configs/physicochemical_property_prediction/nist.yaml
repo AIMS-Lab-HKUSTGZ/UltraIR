@@ -1,0 +1,52 @@
+seed: 42
+device: cuda
+use_bf16: true
+data:
+  root: data/physicochemical_property_prediction
+  layout: fold_directories
+  dataset: nist
+  file_pattern: "{dataset}_fold-{fold}_{split}_{filename}"
+  kfold: 5
+  default_fold: demo
+  splits: {train: train, valid: valid, test: test}
+  ir_name: ir_norm.npy
+loader: {batch_size: 128, num_workers: 8, pin_memory: true}
+run:
+  mode: train_eval
+  method_name: ultrair_pretrained_nist
+  init_ckpt: checkpoints/pretraining/ultrair_pretraining_general_epoch5.pt
+  ckpt_tag: last
+train: &property_train
+  epochs: 150
+  lr: 0.0001
+  weight_decay: 0.01
+  grad_clip_norm: 1.0
+  save_root: checkpoints
+  save_best: true
+  save_last: true
+  best_selector: overall.r2
+  best_mode: max
+  scheduler: {warmup_epochs: 5, eta_min: 0.00001}
+results: {root: results}
+model:
+  name: ultrairclassifier
+  args: &property_model
+    signal_size: 1792
+    d_model: 1024
+    patch_len: 16
+    n_heads: 16
+    num_global_layers: 8
+    dropout: 0.1
+    head_dropout: 0.1
+task:
+  name: physicochemical_property_prediction
+  args: &property_task
+    property_names: [SAScore, LogP, TPSA, NumHDonors, NumHAcceptors, NumRotatableBonds, FractionCSP3, BertzCT, QED, NumAromaticRings, NumAliphaticRings]
+    stats_mode: per_fold_train
+    target_normalization: standard
+    prediction_activation: linear
+    loss: smooth_l1
+    loss_beta: 0.01
+augment:
+  enabled: false
+  path: ../aug.yaml

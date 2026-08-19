@@ -1,0 +1,66 @@
+seed: 42
+device: cuda
+use_bf16: true
+data:
+  root: data/molecular_structure_elucidation
+  layout: fold_directories
+  dataset: uspto
+  file_pattern: "{dataset}_fold-{fold}_{split}_{filename}"
+  kfold: 5
+  default_fold: 1
+  splits: {train: train, valid: valid, test: test}
+  ir_name: ir_norm.npy
+loader: {batch_size: 64, num_workers: 8, pin_memory: true}
+tokenizer:
+  tokenize_label: true
+  label: {max_len: 128, add_bos: true, add_eos: true}
+  extras: {formula: {max_len: 64}}
+run:
+  mode: train_eval
+  method_name: ultrair_pretrained_uspto
+  init_ckpt: checkpoints/pretraining/ultrair_pretraining_molstrelu_epoch5.pt
+  ckpt_tag: last
+train:
+  epochs: 100
+  lr: 0.0001
+  weight_decay: 0.01
+  save_root: checkpoints
+  save_best: true
+  save_last: true
+  scheduler: {warmup_epochs: 5, eta_min: 0.00001}
+results: {root: results}
+model:
+  name: ultrair_structural_adapter
+  args:
+    signal_size: 1792
+    d_model: 1024
+    patch_len: 16
+    n_heads: 16
+    num_global_layers: 8
+    dropout: 0.1
+    head_dropout: 0.1
+    input_fusion_hidden: 32
+    formula_num_layers: 4
+    decoder_num_layers: 8
+    formula_max_len: 64
+    smiles_max_len: 128
+    beam_size: 10
+    num_return_sequences: 10
+    length_penalty: 0.7
+    use_ir_vocab_prompt: true
+    ir_prompt_mode: soft
+    ir_vocab_prompt_temperature: 0.7
+    use_multi_token_ir_memory: true
+    ir_num_latents: 8
+    ir_resampler_layers: 2
+    lambda_ir_formula_contrastive: 0.1
+    lambda_ir_target_contrastive: 0.05
+    contrastive_dim: 256
+    contrastive_temperature: 0.1
+    use_formula_rerank: true
+task:
+  name: molecular_structure_elucidation
+  args: {generation_max_len: 128, beam_size: 10, num_return_sequences: 10, eval_topk: [1, 5, 10]}
+augment:
+  enabled: true
+  path: ../aug.yaml

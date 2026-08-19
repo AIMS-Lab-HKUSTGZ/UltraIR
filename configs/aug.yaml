@@ -1,0 +1,6 @@
+p_noise: 0.1
+noise_db: [5, 20]
+p_shiftLR: 0.1
+shiftLR_size: [0.01, 0.05]
+p_shiftUD: 0.1
+shiftUD_size: [0.01, 0.05]

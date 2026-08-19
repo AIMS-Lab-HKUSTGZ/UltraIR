@@ -1,0 +1,43 @@
+seed: 42
+device: cuda
+use_bf16: true
+data:
+  root: data/mixture_level_component_quantification
+  layout: fold_directories
+  dataset: experimental_four_component
+  file_pattern: "{dataset}_fold-{fold}_{split}_{filename}"
+  kfold: 5
+  default_fold: demo
+  splits: {train: train, valid: valid, test: test}
+  ir_name: experimental_four_component_spectra.npy
+loader: {batch_size: 16, num_workers: 0, pin_memory: true}
+run:
+  mode: train_eval
+  method_name: ultrair_pretrained_experimental_four_component
+  init_ckpt: checkpoints/mixture_level_component_quantification/ultrair_pretrained_synthetic_four_component/fold-1
+  init_ckpt_tag: last
+  ckpt_tag: last
+train:
+  epochs: 225
+  lr: 0.0004
+  weight_decay: 0.01
+  grad_clip_norm: 1.0
+  save_root: checkpoints
+  save_best: true
+  save_last: true
+  scheduler: {warmup_epochs: 5, eta_min: 0.00001}
+results: {root: results}
+model:
+  name: ultrairclassifier
+  args: {signal_size: 1792, d_model: 1024, patch_len: 16, n_heads: 16, num_global_layers: 8, dropout: 0.1, head_dropout: 0.4}
+task:
+  name: mixture_level_component_quantification
+  args:
+    label_file: experimental_four_component_targets.npy
+    property_names: [an_pct, adn_pct, pn_pct, glycerol_pct]
+    stats_mode: per_fold_train
+    target_normalization: standard
+    prediction_activation: linear
+    loss: smooth_l1
+    loss_beta: 0.01
+augment: {enabled: false, path: ../aug.yaml}
