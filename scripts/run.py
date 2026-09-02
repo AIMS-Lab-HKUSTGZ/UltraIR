@@ -105,7 +105,7 @@ def resolve_model_config(cfg: dict[str, Any]) -> tuple[str, dict[str, Any]]:
 
 Fold = int | str
 
-COMPLETE_PACKAGED_DEMO_TASKS = {
+FIVE_FOLD_ONLY_TASKS = {
     "medicinal_herb_constituent_quantification",
     "medicinal_herb_geographic_origin_traceability",
 }
@@ -243,6 +243,13 @@ def resolve_folds(args: argparse.Namespace, cfg: dict[str, Any]) -> list[Fold]:
     ]
     if not folds or invalid:
         raise ValueError(f"Fold indices must be within [1, {fold_count}], got {folds}")
+
+    task_name = str(cfg.get("task", {}).get("name", ""))
+    if "demo" in folds and task_name in FIVE_FOLD_ONLY_TASKS:
+        raise ValueError(
+            "The packaged medicinal-herb data contains fold-1 through fold-5, "
+            "not fold-demo. Pass --fold <1-5> or --kfold."
+        )
     return folds
 
 
@@ -270,28 +277,6 @@ def print_demo_data_notice(cfg: dict[str, Any]) -> None:
             )
         )
         expected_layout = f"<PATH>/{file_pattern}"
-
-    task_name = str(cfg.get("task", {}).get("name", ""))
-    if task_name in COMPLETE_PACKAGED_DEMO_TASKS:
-        print(
-            colorize(
-                "[PACKAGED FULL DATA] fold-demo is selected. For this medicinal-herb "
-                f"task, {demo_location} contains the complete packaged "
-                "train/valid/test dataset.",
-                "1;32",
-            ),
-            file=stream,
-        )
-        print(
-            colorize(
-                "[OPTIONAL 5-FOLD] To use custom five-fold partitions, place the "
-                f"task files under {expected_layout} using the configured filenames, "
-                "then pass --fold <1-5> or --kfold.",
-                "1;34",
-            ),
-            file=stream,
-        )
-        return
 
     print(
         colorize(

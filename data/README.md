@@ -1,9 +1,9 @@
 # UltraIR Data
 
-Task directories provide a `fold-demo` with the documented training and
+Most task directories provide a `fold-demo` with the documented training and
 evaluation layout. The two medicinal-herb task directories contain complete
-packaged train/validation/test data. The preparation utilities below create
-`fold-1` through `fold-5` for cross-validation workflows.
+packaged `fold-1` through `fold-5` partitions for cross-validation. The
+preparation utilities below create the same five-fold layout for other data.
 
 ## Task guides
 
@@ -82,12 +82,12 @@ Preparation follows these task-specific normalization rules:
   `data.mixture_level_component_quantification.prepare` instead of generic
   per-spectrum min-max normalization.
 
-The packaged medicinal-herb tasks apply percent-transmission-to-absorbance
+The packaged medicinal-herb folds apply percent-transmission-to-absorbance
 conversion and per-spectrum min-max normalization, followed by training-fold
 point-wise spectral standardization. Constituent-quantification configs also
 standardize each regression target from training-fold statistics. Both tasks
-resize the 1868-point spectra to 1792 points at runtime; load their included
-`fold-demo` arrays directly.
+resize the 1868-point spectra to 1792 points at runtime. Run one included
+partition with `--fold 1` or all five with `--kfold`.
 
 ## Local processing code
 

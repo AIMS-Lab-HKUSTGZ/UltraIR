@@ -83,7 +83,7 @@ UltraIR/
   data/
     common/                # shared download, conversion, and split utilities
     pretraining/           # pretraining data documentation and NumPy demo
-    <task>/                # task data documentation, tools, and fold-demo arrays
+    <task>/                # task data documentation, tools, and packaged arrays
   scripts/
     pretrain.py            # pretraining pipeline
     run.py                 # downstream training and evaluation
@@ -183,9 +183,9 @@ The second command includes the pretraining files, so the two commands are
 alternatives rather than consecutive steps. Both preserve the remote directory
 layout under the local `checkpoints/` directory.
 
-Task directories provide a runnable `fold-demo` with the same file contract as
-prepared data. The two medicinal-herb task directories contain complete
-packaged train/validation/test arrays. Start with
+Most task directories provide a runnable `fold-demo` with the same file
+contract as prepared data. The two medicinal-herb task directories instead
+contain complete `fold-1` through `fold-5` partitions. Start with
 [`data/README.md`](data/README.md) for source links and shared conventions, then
 use the task-specific document for exact filenames, shapes, label order,
 normalization, and preparation commands:
@@ -414,11 +414,15 @@ For example, predict the geographic origin of one spectrum or a batch:
 ```bash
 python -m scripts.predict \
   --config configs/medicinal_herb_geographic_origin_traceability/jyh.yaml \
-  --ckpt checkpoints/medicinal_herb_geographic_origin_traceability/jyh/ultrair_jyh.pt \
+  --ckpt checkpoints/medicinal_herb_geographic_origin_traceability/jyh/ultrair_jyh_fold-1.pt \
   --input /path/to/unlabeled_jyh_spectra.npy \
   --output predictions.json \
   --device cuda:0
 ```
+
+The packaged medicinal-herb checkpoints are saved per fold. Replace `fold-1`
+with the desired fold number; constituent-quantification checkpoints use the
+corresponding `ultrair_jyh_lc_fold-N.pt` or `ultrair_syh_lc_fold-N.pt` name.
 
 The two targeted mixture tasks accept one pair as `[2, L]` or a batch as
 `[N, 2, L]`. Channel 0 is the pure reference spectrum and channel 1 is the

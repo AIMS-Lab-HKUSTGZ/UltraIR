@@ -7,7 +7,7 @@ data:
   dataset: jyh
   file_pattern: "{dataset}_fold-{fold}_{split}_{filename}"
   kfold: 5
-  default_fold: demo
+  default_fold: 1
   splits: {train: train, valid: valid, test: test}
   ir_name: jyh_ir.npy
   spectral_preprocess: {enable: true, steps: [transmission_percent_to_absorbance, per_spectrum_minmax]}
