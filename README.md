@@ -186,10 +186,6 @@ python -m scripts.uspto_pipeline --help
 
 ## Checkpoints and data
 
-The [USPTO pipeline](data/uspto/README.md) downloads public data, prepares five
-scaffold folds, and runs all five molecular and targeted-mixture tasks using
-the task configurations under `configs/`.
-
 Pretrained and task-adapted weights are distributed separately through the
 [UltraIR Hugging Face repository](https://huggingface.co/yusentan/UltraIR).
 Use a checkpoint that matches the selected task, dataset, and model
@@ -226,6 +222,9 @@ hf download yusentan/UltraIR \
 The second command includes the pretraining files, so the two commands are
 alternatives rather than consecutive steps. Both preserve the remote directory
 layout under the local `checkpoints/` directory.
+
+For USPTO, the [end-to-end pipeline](#uspto-end-to-end-pipeline) downloads
+the public dataset and prepares five scaffold folds automatically.
 
 Most task directories provide a runnable `fold-demo` with the same file
 contract as prepared data. The two medicinal-herb task directories instead
