@@ -135,9 +135,8 @@ PyTorch **2.6.0+cu124** with CUDA **12.4**; the remaining package versions match
 that file.
 
 The packaged demo runs on a standard CPU computer with **16 GB RAM**.
-GPU training was validated on an **NVIDIA H200** with **16 CPU cores and
-64 GiB RAM**. A CUDA-capable GPU accelerates training and is used for the full
-USPTO pipeline. No other specialized hardware is required. Optional converter
+For the full USPTO pipeline, use a CUDA-capable GPU with **16 CPU cores and
+64 GiB RAM**. No other specialized hardware is required. Optional converter
 dependencies are listed below; the molecular-dynamics generator has its own
 [environment guide](data/pretraining/molecular_dynamics/README.md).
 
