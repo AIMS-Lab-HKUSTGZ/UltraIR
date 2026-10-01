@@ -214,8 +214,8 @@ hf download yusentan/UltraIR \
 
 This set contains the five general pretraining epochs and the
 molecular-structure pretraining checkpoint. To also obtain every released
-task-adapted checkpoint, download the complete checkpoint tree instead (19
-files, approximately 11.1 GB):
+task-adapted checkpoint, download the complete checkpoint tree instead (35
+files, approximately 19.7 GB):
 
 ```bash
 hf download yusentan/UltraIR \
