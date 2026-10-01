@@ -20,6 +20,7 @@ from ultrair.engine import train_and_validate
 from ultrair.infer import infer_eval_and_save_txt, run_inference_collect
 from ultrair.models.registry import build_model
 from ultrair.tasks.registry import TASK_NAMES, build_task
+from ultrair.utils.checkpoint_download import PRETRAINED_FILES, ensure_pretrained_checkpoint
 from ultrair.utils.misc import (
     cleanup_distributed,
     ensure_dir,
@@ -578,6 +579,14 @@ def main() -> None:
             "Distributed downstream execution is not supported; run scripts.run "
             "as a single process."
         )
+
+    if args.ckpt is None and mode == "train_eval" and run_cfg.get("init_ckpt"):
+        default_checkpoint = Path(run_cfg["init_ckpt"]).expanduser()
+        if (
+            default_checkpoint.name in PRETRAINED_FILES
+            and default_checkpoint.parent.resolve() == Path("checkpoints/pretraining").resolve()
+        ):
+            ensure_pretrained_checkpoint(default_checkpoint)
 
     try:
         primary_device = device

@@ -255,8 +255,9 @@ and evaluation results to `runs/demo/`. CUDA is used when available;
 otherwise the runner uses CPU. Add `--device cpu` to select CPU explicitly.
 
 Use the packaged NIST functional-group `fold-demo` to try the training and
-evaluation workflow. This is a small example dataset; download the pretraining
-checkpoints above before starting.
+evaluation workflow. The runner reuses the default pretrained encoder in
+`checkpoints/pretraining/` or downloads that single file automatically if it
+is missing.
 
 First, train for one epoch on the demo split:
 
