@@ -220,10 +220,7 @@ evaluation report and example prediction exist. Changed training settings
 are rejected. This reuses finished folds; it does not resume a partially
 trained epoch.
 
-## Validation
-
-See [VALIDATION.md](VALIDATION.md) for data checks, GPU execution checks and
-full-data benchmark results. Effective per-fold configurations are saved under
-`work-dir/configs/`, using the task YAML settings with resolved data paths,
-output paths and device. CLI options such as `--epochs` and `--batch-size`
-control the corresponding runtime settings.
+Effective per-fold configurations are saved under `runs/uspto/configs/`,
+using the task YAML settings with resolved data paths, output paths and device.
+CLI options such as `--epochs` and `--batch-size` control the corresponding
+runtime settings.

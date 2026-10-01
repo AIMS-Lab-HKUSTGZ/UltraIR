@@ -422,8 +422,7 @@ time remaining; per-fold logs are saved under `runs/uspto/logs/`.
 For a quick execution check, run
 `python -m scripts.uspto_pipeline --work-dir runs/uspto-smoke --smoke`.
 See the [complete USPTO guide](data/uspto/README.md) for storage requirements,
-staged execution, task selection, and completed-fold reuse, and the
-[validation record](data/uspto/VALIDATION.md) for benchmark results.
+staged execution, task selection, and completed-fold reuse.
 
 ## Checkpoint evaluation
 
