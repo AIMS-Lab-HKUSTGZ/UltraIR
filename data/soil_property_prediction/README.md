@@ -37,9 +37,9 @@ configurable seed.
 
 ```bash
 python -m data.common.labeled \
-  --ir /path/to/ossl/ir.npy \
-  --labels /path/to/ossl/labels.npy \
-  --output-dir /path/to/prepared/soil_property_prediction \
+  --ir data/ossl/ir.npy \
+  --labels data/ossl/labels.npy \
+  --output-dir data/prepared/soil_property_prediction \
   --k 5 --valid-fraction 0.1 --seed 42
 ```
 
@@ -47,7 +47,7 @@ The output contains full arrays, `manifest.json`, and the files expected by the
 training config:
 
 ```text
-/path/to/prepared/soil_property_prediction/
+data/prepared/soil_property_prediction/
   fold-1/{train,valid,test}/{ir.npy,labels.npy}
   ...
   fold-5/{train,valid,test}/{ir.npy,labels.npy}
@@ -65,6 +65,7 @@ Run the packaged example arrays:
 
 ```bash
 python -m scripts.run \
+  --output-dir runs/soil-property-prediction \
   --task soil_property_prediction \
   --fold demo
 ```
@@ -73,8 +74,9 @@ Run one prepared fold:
 
 ```bash
 python -m scripts.run \
+  --output-dir runs/soil-property-prediction \
   --task soil_property_prediction \
-  --data-root /path/to/prepared/soil_property_prediction \
+  --data-root data/prepared/soil_property_prediction \
   --fold 1
 ```
 
@@ -82,7 +84,8 @@ Run all five folds:
 
 ```bash
 python -m scripts.run \
+  --output-dir runs/soil-property-prediction \
   --task soil_property_prediction \
-  --data-root /path/to/prepared/soil_property_prediction \
+  --data-root data/prepared/soil_property_prediction \
   --kfold
 ```

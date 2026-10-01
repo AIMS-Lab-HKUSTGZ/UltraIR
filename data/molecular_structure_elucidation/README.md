@@ -29,9 +29,9 @@ All source-specific converters first produce an aligned spectrum array and
 
 ```bash
 python -m data.common.molecular \
-  --ir /path/to/converted/source/ir_norm.npy \
-  --smiles /path/to/converted/source/smiles.npy \
-  --output-dir /path/to/prepared/molecular_structure_elucidation/source \
+  --ir data/converted/source/ir_norm.npy \
+  --smiles data/converted/source/smiles.npy \
+  --output-dir data/prepared/molecular_structure_elucidation/source \
   --k 5 --valid-fraction 0.1 --seed 42
 ```
 
@@ -46,18 +46,18 @@ Use an explicit ID list and the public NIST/PubChem helpers, then parse JCAMP-DX
 
 ```bash
 python -m data.common.nist_download \
-  --ids /path/to/nist_ids.txt --output-dir /path/to/work/nist/jdx
+  --ids runs/nist_ids.txt --output-dir data/work/nist/jdx
 python -m data.common.pubchem jcamp \
-  --input-dir /path/to/work/nist/jdx \
-  --output-dir /path/to/work/nist/smiles_txt
+  --input-dir data/work/nist/jdx \
+  --output-dir data/work/nist/smiles_txt
 python -m data.common.jcamp \
-  --input-dir /path/to/work/nist/jdx \
-  --smiles-dir /path/to/work/nist/smiles_txt \
-  --output-dir /path/to/work/nist/converted
+  --input-dir data/work/nist/jdx \
+  --smiles-dir data/work/nist/smiles_txt \
+  --output-dir data/work/nist/converted
 python -m data.common.molecular \
-  --ir /path/to/work/nist/converted/ir_norm.npy \
-  --smiles /path/to/work/nist/converted/smiles.npy \
-  --output-dir /path/to/prepared/molecular_structure_elucidation/nist
+  --ir data/work/nist/converted/ir_norm.npy \
+  --smiles data/work/nist/converted/smiles.npy \
+  --output-dir data/prepared/molecular_structure_elucidation/nist
 ```
 
 Only requested IDs are downloaded. JCAMP conversion uses the 400-4000 cm-1
@@ -71,17 +71,17 @@ PNGs, then run `molecular`:
 
 ```bash
 python -m data.common.pubchem csv \
-  --input-csv /path/to/sdbs/metadata.csv \
-  --output-csv /path/to/work/sdbs/metadata_with_smiles.csv
+  --input-csv data/sdbs/metadata.csv \
+  --output-csv data/work/sdbs/metadata_with_smiles.csv
 python -m data.common.sdbs_image \
-  --metadata-csv /path/to/work/sdbs/metadata_with_smiles.csv \
-  --image-root /path/to/sdbs \
+  --metadata-csv data/work/sdbs/metadata_with_smiles.csv \
+  --image-root runs/sdbs \
   --smiles-field SMILES --skip-invalid \
-  --output-dir /path/to/work/sdbs/converted
+  --output-dir data/work/sdbs/converted
 python -m data.common.molecular \
-  --ir /path/to/work/sdbs/converted/ir.npy \
-  --smiles /path/to/work/sdbs/converted/smiles.npy \
-  --output-dir /path/to/prepared/molecular_structure_elucidation/sdbs
+  --ir data/work/sdbs/converted/ir.npy \
+  --smiles data/work/sdbs/converted/smiles.npy \
+  --output-dir data/prepared/molecular_structure_elucidation/sdbs
 ```
 
 The PNG converter records source IDs/files and rejected rows. PubChem enrichment
@@ -94,12 +94,12 @@ For a local simulated USPTO Parquet release:
 
 ```bash
 python -m data.common.parquet_ir \
-  --input-dir /path/to/uspto/parquet \
-  --output-dir /path/to/work/uspto/converted
+  --input-dir runs/uspto/parquet \
+  --output-dir data/work/uspto/converted
 python -m data.common.molecular \
-  --ir /path/to/work/uspto/converted/ir_norm.npy \
-  --smiles /path/to/work/uspto/converted/smiles.npy \
-  --output-dir /path/to/prepared/molecular_structure_elucidation/uspto
+  --ir data/work/uspto/converted/ir_norm.npy \
+  --smiles data/work/uspto/converted/smiles.npy \
+  --output-dir data/prepared/molecular_structure_elucidation/uspto
 ```
 
 `parquet_ir` requires `pyarrow`, validates ID/SMILES/frequency/spectrum columns,
@@ -111,17 +111,20 @@ The three dataset configs share the same prepared layout. For example:
 
 ```bash
 python -m scripts.run \
+  --output-dir runs/molecular-structure-elucidation \
   --config configs/molecular_structure_elucidation/nist.yaml \
   --fold demo
 
 python -m scripts.run \
+  --output-dir runs/molecular-structure-elucidation \
   --config configs/molecular_structure_elucidation/nist.yaml \
-  --data-root /path/to/prepared/molecular_structure_elucidation/nist \
+  --data-root data/prepared/molecular_structure_elucidation/nist \
   --fold 1
 
 python -m scripts.run \
+  --output-dir runs/molecular-structure-elucidation \
   --config configs/molecular_structure_elucidation/nist.yaml \
-  --data-root /path/to/prepared/molecular_structure_elucidation/nist \
+  --data-root data/prepared/molecular_structure_elucidation/nist \
   --kfold
 ```
 

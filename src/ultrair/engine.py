@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+import time
 from typing import Any, Optional
 
 import numpy as np
@@ -206,6 +207,7 @@ def train_and_validate(
     if should_save:
         ensure_dir(checkpoint_dir)
 
+    training_started = time.monotonic()
     for epoch in range(1, epochs + 1):
         model.train()
         sampler = getattr(train_dl, "sampler", None)
@@ -264,5 +266,10 @@ def train_and_validate(
             best_score = score
             best_path = str(checkpoint_dir / f"best_{run_id}.pt")
             save_checkpoint(best_path, model, metadata)
+        if is_main_process():
+            remaining = (time.monotonic() - training_started) / epoch * (epochs - epoch)
+            hours, remainder = divmod(int(remaining), 3600)
+            minutes, seconds = divmod(remainder, 60)
+            print(f"[train] fold={fold} epochs={epoch}/{epochs} ({epoch/epochs:.0%}); training ETA {hours:02d}:{minutes:02d}:{seconds:02d}", flush=True)
     barrier()
     return {"last": last_path, "best": best_path}

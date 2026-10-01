@@ -19,13 +19,13 @@ from ultrair.utils.string_tokenizer import (
 
 
 def _load_array(path: Path, mmap: bool) -> np.ndarray:
-    array = np.load(path, allow_pickle=True)
-    if mmap and array.dtype != object:
+    if mmap:
         try:
             return np.load(path, allow_pickle=True, mmap_mode="r")
-        except OSError:
+        except (OSError, ValueError):
+            # Object arrays and some mounted filesystems cannot be mapped.
             pass
-    return array
+    return np.load(path, allow_pickle=True)
 
 
 def _is_numeric(value: Any) -> bool:
@@ -73,7 +73,7 @@ class NpyIRDataset(Dataset):
 
         self.signal_size = int(self.x.shape[-1])
         self.num_classes = -1
-        if self.y.dtype != object:
+        if np.issubdtype(self.y.dtype, np.number) or np.issubdtype(self.y.dtype, np.bool_):
             if self.y.ndim == 2:
                 self.num_classes = int(self.y.shape[1])
             elif self.y.size:

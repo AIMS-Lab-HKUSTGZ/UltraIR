@@ -69,7 +69,7 @@ def _smiles_text(value: object) -> str:
 
 
 def generate_labels(
-    smiles: np.ndarray, radius: int = 2, n_bits: int = 2048
+    smiles: np.ndarray, radius: int = 2, n_bits: int = 2048, progress: bool = False
 ) -> dict[str, np.ndarray]:
     """Return labels and a valid mask in the original SMILES order."""
     if np.asarray(smiles).ndim != 1:
@@ -115,7 +115,8 @@ def generate_labels(
         ("NumAromaticRings", Lipinski.NumAromaticRings),
         ("NumAliphaticRings", Lipinski.NumAliphaticRings),
     ]
-    for i, raw in enumerate(smiles):
+    from tqdm import tqdm
+    for i, raw in enumerate(tqdm(smiles, desc="[prepare] Molecular labels", unit="molecule", disable=not progress)):
         text = _smiles_text(raw)
         with rdBase.BlockLogs():
             mol = Chem.MolFromSmiles(text) if text else None

@@ -18,8 +18,8 @@ For a CPU run:
 
 ```bash
 python -m data.pretraining.molecular_dynamics.run_many_ir_openmm \
-  --input /path/to/smiles.csv \
-  --output /path/to/md_ir.csv \
+  --input data/smiles.csv \
+  --output data/md_ir.csv \
   --platform CPU \
   --workers 1
 ```
@@ -29,8 +29,8 @@ GPU and the parent process writes all successful rows:
 
 ```bash
 python -m data.pretraining.molecular_dynamics.run_many_ir_openmm \
-  --input /path/to/smiles.csv \
-  --output /path/to/md_ir.csv \
+  --input data/smiles.csv \
+  --output data/md_ir.csv \
   --gpus 0,1 --workers-per-gpu 1 --platform CUDA
 ```
 
@@ -50,12 +50,12 @@ source-independent molecular processor:
 
 ```bash
 python -m data.pretraining.molecular_dynamics.convert_output \
-  --input /path/to/md_ir.csv \
-  --output-dir /path/to/md_raw
+  --input data/md_ir.csv \
+  --output-dir data/md_raw
 python -m data.common.molecular \
-  --ir /path/to/md_raw/ir.npy \
-  --smiles /path/to/md_raw/smiles.npy \
-  --output-dir /path/to/prepared/md \
+  --ir data/md_raw/ir.npy \
+  --smiles data/md_raw/smiles.npy \
+  --output-dir data/prepared/md \
   --no-folds
 ```
 

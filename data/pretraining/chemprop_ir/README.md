@@ -18,16 +18,16 @@ Run the official predictor independently for the two released checkpoints
 (`model_1.pt` and `model_2.pt` in the repository's model directory):
 
 ```bash
-cd /path/to/chemprop-IR
+cd runs/chemprop-IR
 python predict.py \
-  --test_path /path/to/input_smiles.csv \
-  --checkpoint_path /path/to/chemprop-IR/model/model_1.pt \
-  --preds_path /path/to/predictions_a.csv \
+  --test_path data/input_smiles.csv \
+  --checkpoint_path runs/chemprop-IR/model/model_1.pt \
+  --preds_path runs/predictions_a.csv \
   --no_cuda
 python predict.py \
-  --test_path /path/to/input_smiles.csv \
-  --checkpoint_path /path/to/chemprop-IR/model/model_2.pt \
-  --preds_path /path/to/predictions_b.csv \
+  --test_path data/input_smiles.csv \
+  --checkpoint_path runs/chemprop-IR/model/model_2.pt \
+  --preds_path runs/predictions_b.csv \
   --no_cuda
 ```
 
@@ -42,8 +42,8 @@ Average the two outputs with the public helper from this repository:
 
 ```bash
 python -m data.pretraining.chemprop_ir.combine_predictions \
-  --predictions /path/to/predictions_a.csv /path/to/predictions_b.csv \
-  --output-dir /path/to/chemprop_ir_raw
+  --predictions runs/predictions_a.csv runs/predictions_b.csv \
+  --output-dir data/chemprop_ir_raw
 ```
 
 The helper requires exact SMILES row equality and exact intensity-header
@@ -53,9 +53,9 @@ UltraIR preparation and feature generation as follows:
 
 ```bash
 python -m data.common.molecular \
-  --ir /path/to/chemprop_ir_raw/ir.npy \
-  --smiles /path/to/chemprop_ir_raw/smiles.npy \
-  --output-dir /path/to/prepared/chemprop_ir \
+  --ir data/chemprop_ir_raw/ir.npy \
+  --smiles data/chemprop_ir_raw/smiles.npy \
+  --output-dir data/prepared/chemprop_ir \
   --no-folds
 ```
 

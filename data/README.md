@@ -7,6 +7,9 @@ preparation utilities below create the same five-fold layout for other data.
 
 ## Task guides
 
+For public USPTO data, use the [end-to-end pipeline](uspto/README.md), which
+covers download, preparation, five-fold training, evaluation, and prediction.
+
 | Task | Data guide |
 | --- | --- |
 | Functional-group prediction | [`functional_group_prediction/README.md`](functional_group_prediction/README.md) |
@@ -56,8 +59,9 @@ names. Select the matching YAML and pass the prepared root explicitly:
 
 ```bash
 python -m scripts.run \
+  --output-dir runs/data \
   --config configs/<task>/<dataset>.yaml \
-  --data-root /path/to/prepared/<task>/<dataset> \
+  --data-root data/prepared/<task>/<dataset> \
   --fold 1
 ```
 
@@ -120,15 +124,15 @@ ID per line or as a directory whose `.txt`, `.npy`, `.jdx`, or `.dx` stems are
 IDs. Its default request rate is one per second:
 
 ```bash
-python -m data.common.nist_download --ids /path/to/nist_ids.txt \
-  --output-dir /path/to/nist/jdx
+python -m data.common.nist_download --ids runs/nist_ids.txt \
+  --output-dir runs/nist/jdx
 ```
 
 Add PubChem ConnectivitySMILES after downloading NIST JCAMP files:
 
 ```bash
-python -m data.common.pubchem jcamp --input-dir /path/to/nist/jdx \
-  --output-dir /path/to/nist/smiles_txt
+python -m data.common.pubchem jcamp --input-dir runs/nist/jdx \
+  --output-dir runs/nist/smiles_txt
 ```
 
 For a locally obtained SDBS metadata CSV, preserve every input row while adding
@@ -136,8 +140,8 @@ SMILES and an explicit per-row status:
 
 ```bash
 python -m data.common.pubchem csv \
-  --input-csv /path/to/sdbs/ir_results_deduplicated.csv \
-  --output-csv /path/to/sdbs/metadata_with_smiles.csv
+  --input-csv data/sdbs/ir_results_deduplicated.csv \
+  --output-csv data/sdbs/metadata_with_smiles.csv
 ```
 
 For local SDBS metadata and PNG files, use `sdbs_image.py`. Acquisition commands
@@ -147,8 +151,8 @@ For a converted molecular source containing aligned `ir.npy` and `smiles.npy`:
 
 ```bash
 python -m data.common.molecular \
-  --ir /path/to/ir.npy --smiles /path/to/smiles.npy \
-  --output-dir /path/to/prepared/molecular
+  --ir runs/ir.npy --smiles runs/smiles.npy \
+  --output-dir data/prepared/molecular
 ```
 
 For a non-molecular source that has already been reduced to aligned NumPy
@@ -157,8 +161,8 @@ regression does not:
 
 ```bash
 python -m data.common.labeled \
-  --ir /path/to/aligned/ir.npy --labels /path/to/aligned/labels.npy \
-  --output-dir /path/to/prepared/task --stratify --k 5 --seed 42
+  --ir runs/aligned/ir.npy --labels runs/aligned/labels.npy \
+  --output-dir data/prepared/task --stratify --k 5 --seed 42
 ```
 
 Omit `--stratify` for multi-output regression labels. The command writes the
@@ -168,14 +172,14 @@ Source-format converters are kept in `data/common/` because their raw formats
 are handled independently from the molecular labels:
 
 ```bash
-python -m data.common.jcamp --input-dir /path/to/jcamp --output-dir /path/to/prepared
-python -m data.common.parquet_ir --input-dir /path/to/parquet \
-  --output-dir /path/to/prepared
+python -m data.common.jcamp --input-dir runs/jcamp --output-dir runs/prepared
+python -m data.common.parquet_ir --input-dir runs/parquet \
+  --output-dir runs/prepared
 python -m data.common.sdbs_image \
-  --metadata-csv /path/to/sdbs/ir_results_deduplicated.csv \
-  --output-dir /path/to/converted/sdbs --smiles-field SMILES --skip-invalid
-python -m data.common.mixture_csv --spectra-csv /path/to/spectra.csv \
-  --targets-csv /path/to/targets.csv --output-dir /path/to/ftir
+  --metadata-csv data/sdbs/ir_results_deduplicated.csv \
+  --output-dir data/converted/sdbs --smiles-field SMILES --skip-invalid
+python -m data.common.mixture_csv --spectra-csv runs/spectra.csv \
+  --targets-csv runs/targets.csv --output-dir runs/ftir
 ```
 
 The SDBS converter uses the `Image File` and `SDBS No` CSV columns and writes
@@ -189,17 +193,17 @@ JCAMP conversion writes source IDs and source filenames. Pass `--smiles-dir`
 when each JCAMP stem has a matching `<stem>.txt` file containing one SMILES:
 
 ```bash
-python -m data.common.jcamp --input-dir /path/to/jcamp \
-  --smiles-dir /path/to/smiles_txt --output-dir /path/to/nist
+python -m data.common.jcamp --input-dir runs/jcamp \
+  --smiles-dir runs/smiles_txt --output-dir runs/nist
 ```
 
 Filter or subset any aligned NumPy directory without changing row order:
 
 ```bash
-python -m data.common.aligned_arrays filter --input-dir /path/to/full \
-  --output-dir /path/to/valid --mask valid_mask.npy
-python -m data.common.aligned_arrays subset --input-dir /path/to/full \
-  --output-dir /path/to/subset --ratio 0.1 --seed 42
+python -m data.common.aligned_arrays filter --input-dir runs/full \
+  --output-dir runs/valid --mask valid_mask.npy
+python -m data.common.aligned_arrays subset --input-dir runs/full \
+  --output-dir runs/subset --ratio 0.1 --seed 42
 ```
 
 Targeted tasks use the same pair generator. Supply `--smiles` so that scaffold
@@ -208,16 +212,16 @@ weights:
 
 ```bash
 python -m data.common.pairs \
-  --input /path/to/pure_ir.npy --smiles /path/to/smiles.npy \
-  --output-dir /path/to/pairs --augmentations 4 --k 5 --seed 42
+  --input runs/pure_ir.npy --smiles runs/smiles.npy \
+  --output-dir runs/pairs --augmentations 4 --k 5 --seed 42
 ```
 
 The specialized FTIRMix task has a separate source layout and processor:
 
 ```bash
 python -m data.mixture_level_component_quantification.prepare \
-  --source-root /path/to/FTIR_and_Machine_Learning \
-  --output-dir /path/to/prepared/mixture_level_component_quantification
+  --source-root data/FTIR_and_Machine_Learning \
+  --output-dir data/prepared/mixture_level_component_quantification
 ```
 
 The `scripts.prepare_data` entry point dispatches the `molecular`, `pairs`,
@@ -230,8 +234,8 @@ shown above. A recipe has this structure:
 prepare:
   task: functional_group_prediction
   processor: molecular
-  input: /path/to/converted/nist
-  output: /path/to/prepared/nist
+  input: data/converted/nist
+  output: data/prepared/nist
   options:
     ir_name: ir.npy
     smiles_name: smiles.npy
@@ -239,7 +243,7 @@ prepare:
 ```
 
 ```bash
-python -m scripts.prepare_data --config /path/to/recipe.yaml
+python -m scripts.prepare_data --config runs/recipe.yaml
 ```
 
 Use `--validate-only` with the same recipe to validate an existing output

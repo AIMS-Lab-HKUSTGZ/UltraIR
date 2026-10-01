@@ -39,10 +39,12 @@ Run one packaged fold:
 
 ```bash
 python -m scripts.run \
+  --output-dir runs/medicinal-herb-geographic-origin-traceability \
   --config configs/medicinal_herb_geographic_origin_traceability/jyh.yaml \
   --fold 1
 
 python -m scripts.run \
+  --output-dir runs/medicinal-herb-geographic-origin-traceability \
   --config configs/medicinal_herb_geographic_origin_traceability/syh.yaml \
   --fold 1
 ```

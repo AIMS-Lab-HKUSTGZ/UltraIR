@@ -40,10 +40,12 @@ Run one packaged fold:
 
 ```bash
 python -m scripts.run \
+  --output-dir runs/medicinal-herb-constituent-quantification \
   --config configs/medicinal_herb_constituent_quantification/jyh_lc.yaml \
   --fold 1
 
 python -m scripts.run \
+  --output-dir runs/medicinal-herb-constituent-quantification \
   --config configs/medicinal_herb_constituent_quantification/syh_lc.yaml \
   --fold 1
 ```

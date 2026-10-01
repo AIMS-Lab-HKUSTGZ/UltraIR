@@ -42,6 +42,7 @@ def prepare(
     keep_invalid: bool = False,
     valid_fraction: float = 0.1,
     target_points: int = 0,
+    progress: bool = False,
 ) -> None:
     ir = np.load(ir_path, allow_pickle=False)
     smiles = np.load(smiles_path, allow_pickle=True)
@@ -56,7 +57,7 @@ def prepare(
     ir = normalize_array(ir) if normalize else np.asarray(ir, dtype=np.float32)
     if not np.isfinite(ir).all():
         raise ValueError("IR contains non-finite values")
-    labels = generate_labels(smiles)
+    labels = generate_labels(smiles, progress=progress)
     valid_mask = labels["valid_mask"].astype(bool)
     invalid_count = int(len(valid_mask) - valid_mask.sum())
     arrays: dict[str, np.ndarray] = {

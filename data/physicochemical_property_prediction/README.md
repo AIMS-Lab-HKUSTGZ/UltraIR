@@ -35,9 +35,9 @@ then use the common processor:
 
 ```bash
 python -m data.common.molecular \
-  --ir /path/to/converted/source/ir_norm.npy \
-  --smiles /path/to/converted/source/smiles.npy \
-  --output-dir /path/to/prepared/physicochemical_property_prediction/source \
+  --ir data/converted/source/ir_norm.npy \
+  --smiles data/converted/source/smiles.npy \
+  --output-dir data/prepared/physicochemical_property_prediction/source \
   --k 5 --valid-fraction 0.1 --seed 42
 ```
 
@@ -53,18 +53,18 @@ Use only an explicit ID list. The complete conversion is:
 
 ```bash
 python -m data.common.nist_download \
-  --ids /path/to/nist_ids.txt --output-dir /path/to/work/nist/jdx
+  --ids runs/nist_ids.txt --output-dir data/work/nist/jdx
 python -m data.common.pubchem jcamp \
-  --input-dir /path/to/work/nist/jdx \
-  --output-dir /path/to/work/nist/smiles_txt
+  --input-dir data/work/nist/jdx \
+  --output-dir data/work/nist/smiles_txt
 python -m data.common.jcamp \
-  --input-dir /path/to/work/nist/jdx \
-  --smiles-dir /path/to/work/nist/smiles_txt \
-  --output-dir /path/to/work/nist/converted
+  --input-dir data/work/nist/jdx \
+  --smiles-dir data/work/nist/smiles_txt \
+  --output-dir data/work/nist/converted
 python -m data.common.molecular \
-  --ir /path/to/work/nist/converted/ir_norm.npy \
-  --smiles /path/to/work/nist/converted/smiles.npy \
-  --output-dir /path/to/prepared/physicochemical_property_prediction/nist
+  --ir data/work/nist/converted/ir_norm.npy \
+  --smiles data/work/nist/converted/smiles.npy \
+  --output-dir data/prepared/physicochemical_property_prediction/nist
 ```
 
 The JCAMP converter uses 400-4000 cm-1 and 3600 points, then applies the common
@@ -77,17 +77,17 @@ PNGs, and pass the aligned arrays to `molecular`:
 
 ```bash
 python -m data.common.pubchem csv \
-  --input-csv /path/to/sdbs/metadata.csv \
-  --output-csv /path/to/work/sdbs/metadata_with_smiles.csv
+  --input-csv data/sdbs/metadata.csv \
+  --output-csv data/work/sdbs/metadata_with_smiles.csv
 python -m data.common.sdbs_image \
-  --metadata-csv /path/to/work/sdbs/metadata_with_smiles.csv \
-  --image-root /path/to/sdbs \
+  --metadata-csv data/work/sdbs/metadata_with_smiles.csv \
+  --image-root runs/sdbs \
   --smiles-field SMILES --skip-invalid \
-  --output-dir /path/to/work/sdbs/converted
+  --output-dir data/work/sdbs/converted
 python -m data.common.molecular \
-  --ir /path/to/work/sdbs/converted/ir.npy \
-  --smiles /path/to/work/sdbs/converted/smiles.npy \
-  --output-dir /path/to/prepared/physicochemical_property_prediction/sdbs
+  --ir data/work/sdbs/converted/ir.npy \
+  --smiles data/work/sdbs/converted/smiles.npy \
+  --output-dir data/prepared/physicochemical_property_prediction/sdbs
 ```
 
 The PNG converter calibrates the SDBS two-scale axis and records rejected rows.
@@ -99,12 +99,12 @@ For the local simulated USPTO Parquet release:
 
 ```bash
 python -m data.common.parquet_ir \
-  --input-dir /path/to/uspto/parquet \
-  --output-dir /path/to/work/uspto/converted
+  --input-dir runs/uspto/parquet \
+  --output-dir data/work/uspto/converted
 python -m data.common.molecular \
-  --ir /path/to/work/uspto/converted/ir_norm.npy \
-  --smiles /path/to/work/uspto/converted/smiles.npy \
-  --output-dir /path/to/prepared/physicochemical_property_prediction/uspto
+  --ir data/work/uspto/converted/ir_norm.npy \
+  --smiles data/work/uspto/converted/smiles.npy \
+  --output-dir data/prepared/physicochemical_property_prediction/uspto
 ```
 
 `parquet_ir` requires `pyarrow`, validates the spectrum columns, interpolates
@@ -123,17 +123,20 @@ Run the included example or a prepared NIST root as follows:
 
 ```bash
 python -m scripts.run \
+  --output-dir runs/physicochemical-property-prediction \
   --config configs/physicochemical_property_prediction/nist.yaml \
   --fold demo
 
 python -m scripts.run \
+  --output-dir runs/physicochemical-property-prediction \
   --config configs/physicochemical_property_prediction/nist.yaml \
-  --data-root /path/to/prepared/physicochemical_property_prediction/nist \
+  --data-root data/prepared/physicochemical_property_prediction/nist \
   --fold 1
 
 python -m scripts.run \
+  --output-dir runs/physicochemical-property-prediction \
   --config configs/physicochemical_property_prediction/nist.yaml \
-  --data-root /path/to/prepared/physicochemical_property_prediction/nist \
+  --data-root data/prepared/physicochemical_property_prediction/nist \
   --kfold
 ```
 

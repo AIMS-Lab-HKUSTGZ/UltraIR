@@ -45,6 +45,7 @@ def parse_args() -> argparse.Namespace:
         dest="ckpt_tag",
         choices=["best", "last"],
     )
+    parser.add_argument("--output-dir", type=Path, help="Run directory containing trained checkpoints and evaluation results")
     parser.add_argument("--device", help="Device override, for example cuda:0 or cpu")
     parser.add_argument(
         "--strict",
@@ -96,6 +97,8 @@ def build_run_command(args: argparse.Namespace) -> list[str]:
         command.extend(["--ckpt", str(checkpoint)])
     if args.ckpt_tag is not None:
         command.extend(["--ckpt-tag", args.ckpt_tag])
+    if getattr(args, "output_dir", None) is not None:
+        command.extend(["--output-dir", str(args.output_dir.expanduser())])
     if args.device is not None:
         command.extend(["--device", args.device])
     if args.strict:

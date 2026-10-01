@@ -32,18 +32,18 @@ to the pair generator must be an aligned `ir_norm.npy` and `smiles.npy` from
 
 ```bash
 python -m data.common.molecular \
-  --ir /path/to/converted/source/ir.npy \
-  --smiles /path/to/converted/source/smiles.npy \
-  --output-dir /path/to/prepared/molecular/source
+  --ir data/converted/source/ir.npy \
+  --smiles data/converted/source/smiles.npy \
+  --output-dir data/prepared/molecular/source
 ```
 
 Then generate both detection and fractional-contribution targets in one pass:
 
 ```bash
 python -m data.common.pairs \
-  --input /path/to/prepared/molecular/source/ir_norm.npy \
-  --smiles /path/to/prepared/molecular/source/smiles.npy \
-  --output-dir /path/to/prepared/targeted_component_detection/source \
+  --input data/prepared/molecular/source/ir_norm.npy \
+  --smiles data/prepared/molecular/source/smiles.npy \
+  --output-dir data/prepared/targeted_component_detection/source \
   --augmentations 4 --k 5 --valid-fraction 0.1 --seed 42
 ```
 
@@ -67,6 +67,7 @@ Run the packaged example data:
 
 ```bash
 python -m scripts.run \
+  --output-dir runs/targeted-component-detection \
   --config configs/targeted_component_detection/nist.yaml \
   --fold demo
 ```
@@ -75,8 +76,9 @@ Run a prepared NIST pair root:
 
 ```bash
 python -m scripts.run \
+  --output-dir runs/targeted-component-detection \
   --config configs/targeted_component_detection/nist.yaml \
-  --data-root /path/to/prepared/targeted_component_detection/nist \
+  --data-root data/prepared/targeted_component_detection/nist \
   --fold 1
 ```
 
@@ -84,8 +86,9 @@ Run all five scaffold folds:
 
 ```bash
 python -m scripts.run \
+  --output-dir runs/targeted-component-detection \
   --config configs/targeted_component_detection/nist.yaml \
-  --data-root /path/to/prepared/targeted_component_detection/nist \
+  --data-root data/prepared/targeted_component_detection/nist \
   --kfold
 ```
 

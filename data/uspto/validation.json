@@ -1,0 +1,472 @@
+{
+  "date": "2026-10-02",
+  "upstream_commit": "f55743a",
+  "source_record": "https://zenodo.org/records/16417648",
+  "network_download_verified_shards": 1,
+  "published_md5_verified_shards": 9,
+  "full_array_comparison": {
+    "ids": {
+      "shape": [
+        177461
+      ],
+      "exact_equal": true,
+      "max_abs_diff": 0
+    },
+    "ir_norm": {
+      "shape": [
+        177461,
+        3600
+      ],
+      "exact_equal": true,
+      "max_abs_diff": 0
+    },
+    "smiles": {
+      "shape": [
+        177461
+      ],
+      "exact_equal": true,
+      "max_abs_diff": 0
+    },
+    "functional_groups": {
+      "shape": [
+        177461,
+        17
+      ],
+      "exact_equal": true,
+      "max_abs_diff": 0
+    },
+    "fingerprint": {
+      "shape": [
+        177461,
+        2048
+      ],
+      "exact_equal": true,
+      "max_abs_diff": 0
+    },
+    "properties": {
+      "shape": [
+        177461,
+        11
+      ],
+      "exact_equal": true,
+      "max_abs_diff": 0
+    },
+    "formula": {
+      "shape": [
+        177461
+      ],
+      "exact_equal": true,
+      "max_abs_diff": 0
+    }
+  },
+  "preparation": {
+    "settings": {
+      "seed": 42,
+      "max_molecules": 0,
+      "k": 5,
+      "valid_fraction": 0.1,
+      "range_cm-1": [
+        400,
+        4000
+      ],
+      "points": 3600,
+      "protocol": 1,
+      "rdkit_version": "2025.03.6"
+    },
+    "rows": 177461,
+    "folds": [
+      {
+        "fold": 1,
+        "rows": {
+          "train": 124134,
+          "valid": 17834,
+          "test": 35493
+        },
+        "scaffold_overlap": 0
+      },
+      {
+        "fold": 2,
+        "rows": {
+          "train": 124036,
+          "valid": 17933,
+          "test": 35492
+        },
+        "scaffold_overlap": 0
+      },
+      {
+        "fold": 3,
+        "rows": {
+          "train": 124178,
+          "valid": 17791,
+          "test": 35492
+        },
+        "scaffold_overlap": 0
+      },
+      {
+        "fold": 4,
+        "rows": {
+          "train": 124036,
+          "valid": 17933,
+          "test": 35492
+        },
+        "scaffold_overlap": 0
+      },
+      {
+        "fold": 5,
+        "rows": {
+          "train": 124036,
+          "valid": 17933,
+          "test": 35492
+        },
+        "scaffold_overlap": 0
+      }
+    ]
+  },
+  "smoke": {
+    "molecules": 256,
+    "folds": [
+      1
+    ],
+    "epochs": 1,
+    "batch_size": 8,
+    "completed": [
+      {
+        "task": "functional_group_prediction",
+        "seconds": 16.8
+      },
+      {
+        "task": "physicochemical_property_prediction",
+        "seconds": 14.1
+      },
+      {
+        "task": "molecular_structure_elucidation",
+        "seconds": 31.9
+      },
+      {
+        "task": "targeted_component_detection",
+        "seconds": 25.1
+      },
+      {
+        "task": "targeted_fractional_contribution_estimation",
+        "seconds": 25.2
+      }
+    ],
+    "standalone_prediction_verified": true,
+    "cross_validation_files": 5
+  },
+  "full_run": {
+    "status": "partial; structure running, other tasks complete or stopped by user",
+    "completed_at_snapshot": [
+      {
+        "task": "functional_group_prediction",
+        "fold": 1,
+        "epochs": 100,
+        "overall": {
+          "micro_f1": 0.9397701996310468,
+          "macro_f1": 0.8941079052310572,
+          "emr": 0.5724790803820472,
+          "macro": {
+            "accuracy": 0.9642332125141495,
+            "precision": 0.9361225869413579,
+            "recall": 0.8619427499956592,
+            "f1": 0.8941079052310572
+          },
+          "micro": {
+            "accuracy": 0.9642332125141494,
+            "precision": 0.9566410600240914,
+            "recall": 0.9234840797520775,
+            "f1": 0.9397701996310468
+          },
+          "subset_accuracy": 0.5724790803820472,
+          "is_multilabel": true
+        }
+      },
+      {
+        "task": "functional_group_prediction",
+        "fold": 2,
+        "epochs": 100,
+        "overall": {
+          "micro_f1": 0.939265310786106,
+          "macro_f1": 0.8924254834293245,
+          "emr": 0.5791164206018258,
+          "macro": {
+            "accuracy": 0.9647609071804084,
+            "precision": 0.9225276897224317,
+            "recall": 0.8684040483950749,
+            "f1": 0.8924254834293245
+          },
+          "micro": {
+            "accuracy": 0.9647609071804085,
+            "precision": 0.9494190612584311,
+            "recall": 0.9293264447861084,
+            "f1": 0.939265310786106
+          },
+          "subset_accuracy": 0.5791164206018258,
+          "is_multilabel": true
+        }
+      },
+      {
+        "task": "functional_group_prediction",
+        "fold": 3,
+        "epochs": 100,
+        "overall": {
+          "micro_f1": 0.9387201950610983,
+          "macro_f1": 0.8868184387218525,
+          "emr": 0.5733968218190014,
+          "macro": {
+            "accuracy": 0.9641775114193091,
+            "precision": 0.9112938049289923,
+            "recall": 0.867428749543108,
+            "f1": 0.8868184387218525
+          },
+          "micro": {
+            "accuracy": 0.9641775114193091,
+            "precision": 0.9430355230478273,
+            "recall": 0.9344441810320497,
+            "f1": 0.9387201950610983
+          },
+          "subset_accuracy": 0.5733968218190014,
+          "is_multilabel": true
+        }
+      },
+      {
+        "task": "functional_group_prediction",
+        "fold": 4,
+        "epochs": 100,
+        "overall": {
+          "micro_f1": 0.9373884792061005,
+          "macro_f1": 0.880019121673094,
+          "emr": 0.5673109433111687,
+          "macro": {
+            "accuracy": 0.9636521237594553,
+            "precision": 0.9005720305963401,
+            "recall": 0.8632542196953734,
+            "f1": 0.880019121673094
+          },
+          "micro": {
+            "accuracy": 0.9636521237594553,
+            "precision": 0.9414281126708872,
+            "recall": 0.9333833654562305,
+            "f1": 0.9373884792061005
+          },
+          "subset_accuracy": 0.5673109433111687,
+          "is_multilabel": true
+        }
+      },
+      {
+        "task": "functional_group_prediction",
+        "fold": 5,
+        "epochs": 100,
+        "overall": {
+          "micro_f1": 0.9365863771087914,
+          "macro_f1": 0.8869554336465667,
+          "emr": 0.5645779330553364,
+          "macro": {
+            "accuracy": 0.9624836748629352,
+            "precision": 0.9053286373457604,
+            "recall": 0.8728045470587654,
+            "f1": 0.8869554336465667
+          },
+          "micro": {
+            "accuracy": 0.9624836748629352,
+            "precision": 0.9389273958906725,
+            "recall": 0.9342570029733295,
+            "f1": 0.9365863771087914
+          },
+          "subset_accuracy": 0.5645779330553364,
+          "is_multilabel": true
+        }
+      },
+      {
+        "task": "targeted_component_detection",
+        "fold": 1,
+        "epochs": 20,
+        "overall": {
+          "accuracy": 0.998658186121207,
+          "precision": 0.9988655021034014,
+          "recall": 0.9984503986701603,
+          "f1": 0.9986579072511756,
+          "tp": 141752,
+          "tn": 141811,
+          "fp": 161,
+          "fn": 220,
+          "is_binary": true,
+          "threshold": 0.5,
+          "macro_f1": 0.9986581860632733,
+          "roc_auc": 0.9999363598732199,
+          "average_precision": 0.9999349146735337,
+          "num_samples": 283944
+        }
+      },
+      {
+        "task": "targeted_fractional_contribution_estimation",
+        "fold": 1,
+        "epochs": 20,
+        "overall": {
+          "mae": 0.009482366634231632,
+          "rmse": 0.013053124289129641,
+          "r2": 0.9952527524013383,
+          "is_regression": true,
+          "num_samples": 141972
+        }
+      },
+      {
+        "task": "physicochemical_property_prediction",
+        "fold": 1,
+        "epochs": 100,
+        "overall": {
+          "mae": 14.11444607536822,
+          "rmse": 52.84317532283999,
+          "r2": 0.7120040038131421,
+          "normalized_mae": 0.05072160082625022,
+          "normalized_rmse": 0.06926459673957189,
+          "is_regression": true
+        }
+      },
+      {
+        "task": "physicochemical_property_prediction",
+        "fold": 2,
+        "epochs": 100,
+        "overall": {
+          "mae": 10.425011297976495,
+          "rmse": 42.05560299805464,
+          "r2": 0.7716610293274755,
+          "normalized_mae": 0.04284353098499006,
+          "normalized_rmse": 0.06256385139716823,
+          "is_regression": true
+        }
+      },
+      {
+        "task": "physicochemical_property_prediction",
+        "fold": 3,
+        "epochs": 100,
+        "overall": {
+          "mae": 10.398411940248378,
+          "rmse": 42.21495184255513,
+          "r2": 0.7743261456463256,
+          "normalized_mae": 0.04009125171526883,
+          "normalized_rmse": 0.05807352071221797,
+          "is_regression": true
+        }
+      },
+      {
+        "task": "physicochemical_property_prediction",
+        "fold": 4,
+        "epochs": 100,
+        "overall": {
+          "mae": 10.351349033441997,
+          "rmse": 42.018841320259455,
+          "r2": 0.7818006728676107,
+          "normalized_mae": 0.041190501438582716,
+          "normalized_rmse": 0.0597322176877733,
+          "is_regression": true
+        }
+      }
+    ],
+    "execution": "GPU execution of each task across five scaffold folds",
+    "snapshot_time": "2026-10-02 00:11 Asia/Hong_Kong",
+    "task_mean_metrics": {
+      "fg": {
+        "micro_f1": 0.9383461123586286,
+        "macro_f1": 0.8880652765403789,
+        "emr": 0.571376239833876
+      },
+      "detection": {
+        "macro_f1": 0.9986581860632733,
+        "accuracy": 0.998658186121207,
+        "roc_auc": 0.9999363598732199
+      },
+      "fraction": {
+        "r2": 0.9952527524013383,
+        "mae": 0.009482366634231632,
+        "rmse": 0.013053124289129641
+      },
+      "properties": {
+        "r2": 0.7599479629136385,
+        "mae": 11.322304586758772,
+        "rmse": 44.78314287092731
+      }
+    }
+  },
+  "config_sha256": {
+    "configs/aug.yaml": "089c77e26179d1323438edf1ccbd55f2087232c57137761a04f6ed47f0bcadf5",
+    "configs/bacterial_classification/bacterial_classification.yaml": "1135c9ea572be4b9dd8cef9af2b8a6556222c3b51875e67c854349588953bb73",
+    "configs/functional_group_prediction/nist.yaml": "c911a944102e1f23ee61060143a8401398fc30c630113af65ec7faa1c16bac15",
+    "configs/functional_group_prediction/sdbs.yaml": "f2bccde8135d1ff474a054fda079129d64a46e174a5897d9fa819dc6d003b4f5",
+    "configs/functional_group_prediction/uspto.yaml": "57f7f621884d5831e45751c7513fb29eac90122a6551f7b45d52798e1b1fd06f",
+    "configs/medicinal_herb_constituent_quantification/jyh_lc.yaml": "c56e582f827ac5f2de9becab15e375dea3fc1d12bff02ec408dfb526c6bb9fa2",
+    "configs/medicinal_herb_constituent_quantification/syh_lc.yaml": "34d938338a0617ab470c652cd9281868a303a885f4639af6a8ecc7c2f2df9ca6",
+    "configs/medicinal_herb_geographic_origin_traceability/jyh.yaml": "1dda6a79f6ff95cedbef5bc47be296c7dde170895c2ebcabc08197b405ac37e4",
+    "configs/medicinal_herb_geographic_origin_traceability/syh.yaml": "5f5c995cbd43b33a314500635f62c90143301c1fc823f1d5b4f22e80d1f95ea2",
+    "configs/microplastics_classification/microplastics_classification.yaml": "e1f10ee22e082087a5053a1a2ac5c6fc2de31cc5543f71f909a5710738c91916",
+    "configs/mixture_level_component_quantification/experimental_four_component.yaml": "bb3e6696d1c3985ed9a76a6527429a697875eafdb2786ec138cb7df0b7b85a04",
+    "configs/mixture_level_component_quantification/synthetic_four_component.yaml": "ded282e0ba36cf27567e3602763c250f107df2c35d886f2063843fe50d8bae2a",
+    "configs/molecular_structure_elucidation/nist.yaml": "a53559ec61233c572cff55e9ca37d53c22ad1a6c3c655ead2d6f847e3817d57a",
+    "configs/molecular_structure_elucidation/sdbs.yaml": "19c29ce21150b62b4f944aba6201cedb47c1696e8c4ecc569d2710f14d896b16",
+    "configs/molecular_structure_elucidation/uspto.yaml": "5b08abffcbd5538c29bb6767bd7a449abc7e9d48f5b615b0cb32d56af1193073",
+    "configs/physicochemical_property_prediction/nist.yaml": "a45591aced1977013f2b638f0ca49cf941edf426dae579bd34aa52b016273e2e",
+    "configs/physicochemical_property_prediction/sdbs.yaml": "7891d32f9ee793f4b76f4d4db3f72a70767f7eb4fea347576d1327e92fd611c8",
+    "configs/physicochemical_property_prediction/uspto.yaml": "5cb9f93c72b219a12a8c92fd5badb08dce71392a75cfacc474c3dd335d1b1eee",
+    "configs/pretraining/default.yaml": "46be29ba20a09e774ce46ed392be3fe39f27f43f9ba2bc1ecc6e073297ec369d",
+    "configs/soil_property_prediction/soil_property_prediction.yaml": "f72a6316ee66b7d85ac821a24d89dd0192fa54fa79c5759345c0added91ac2e3",
+    "configs/targeted_component_detection/nist.yaml": "2b2f52ae19e7e5b9b4c1963036ff7e547169cf1ac8919298791569e58e01d678",
+    "configs/targeted_component_detection/sdbs.yaml": "bb8e3ce49cbd44bc5dbc6d4bf2791bc6921678e2b6071d145160ef15fb0777db",
+    "configs/targeted_component_detection/uspto.yaml": "a5e278b1f66c46bc59604bc9e1b5a7cfdcd21cbf884fe083610d4f5d0b401e27",
+    "configs/targeted_fractional_contribution_estimation/nist.yaml": "0a4c0e500b962b4072aa203f40b5f50c2409e49a6a50090f375d4d08f60e9aaf",
+    "configs/targeted_fractional_contribution_estimation/sdbs.yaml": "48561de0fdc2f5554240902e041b8579de39783100110a1d86bac7314f186425",
+    "configs/targeted_fractional_contribution_estimation/uspto.yaml": "1e56c5ae5ff8251b290f6b520d07b959815bdfd2c2d49464dfb49e77feef187f"
+  },
+  "cpu_tests_passed": 8,
+  "full_pair_validation": [
+    {
+      "split": "train",
+      "molecules": 124134,
+      "pairs": 993072,
+      "seconds": 11.3,
+      "reference_and_label_rows_verified": 993072,
+      "spectral_rows_sampled": 512
+    },
+    {
+      "split": "valid",
+      "molecules": 17834,
+      "pairs": 142672,
+      "seconds": 28.6,
+      "reference_and_label_rows_verified": 142672,
+      "spectral_rows_sampled": 512
+    },
+    {
+      "split": "test",
+      "molecules": 35493,
+      "pairs": 283944,
+      "seconds": 53.8,
+      "reference_and_label_rows_verified": 283944,
+      "spectral_rows_sampled": 512
+    }
+  ],
+  "checkpoint_retention": {
+    "date": "2026-10-02",
+    "removed": "Inactive full-run and smoke training checkpoints removed at user request after metrics were saved",
+    "preserved": "Active molecular-structure checkpoints, pretrained encoders and original checkpoint symlinks",
+    "completed_fold_reuse_available": false
+  },
+  "release_execution_check": {
+    "date": "2026-10-02",
+    "device": "cpu",
+    "epochs": 1,
+    "folds": [
+      1
+    ],
+    "molecular_rows_per_split": 8,
+    "tasks_completed": [
+      "fg",
+      "properties",
+      "structure",
+      "detection",
+      "fraction"
+    ],
+    "training_reload_evaluation_and_prediction": true,
+    "cross_validation_summaries": 5,
+    "seconds": 239.9370656500032,
+    "completed_fold_reuse": true
+  }
+}

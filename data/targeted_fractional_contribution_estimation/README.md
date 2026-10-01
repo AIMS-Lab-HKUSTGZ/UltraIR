@@ -31,9 +31,9 @@ normalized pure spectra in `[0, 1]` and an aligned `smiles.npy`:
 
 ```bash
 python -m data.common.molecular \
-  --ir /path/to/converted/source/ir.npy \
-  --smiles /path/to/converted/source/smiles.npy \
-  --output-dir /path/to/prepared/molecular/source
+  --ir data/converted/source/ir.npy \
+  --smiles data/converted/source/smiles.npy \
+  --output-dir data/prepared/molecular/source
 ```
 
 Use the shared pair generator to produce the regression targets and scaffold
@@ -41,9 +41,9 @@ folds:
 
 ```bash
 python -m data.common.pairs \
-  --input /path/to/prepared/molecular/source/ir_norm.npy \
-  --smiles /path/to/prepared/molecular/source/smiles.npy \
-  --output-dir /path/to/prepared/targeted_fractional_contribution_estimation/source \
+  --input data/prepared/molecular/source/ir_norm.npy \
+  --smiles data/prepared/molecular/source/smiles.npy \
+  --output-dir data/prepared/targeted_fractional_contribution_estimation/source \
   --augmentations 4 --k 5 --valid-fraction 0.1 --seed 42
 ```
 
@@ -66,6 +66,7 @@ Run the packaged example data:
 
 ```bash
 python -m scripts.run \
+  --output-dir runs/targeted-fractional-contribution-estimation \
   --config configs/targeted_fractional_contribution_estimation/nist.yaml \
   --fold demo
 ```
@@ -74,8 +75,9 @@ Run one prepared NIST root:
 
 ```bash
 python -m scripts.run \
+  --output-dir runs/targeted-fractional-contribution-estimation \
   --config configs/targeted_fractional_contribution_estimation/nist.yaml \
-  --data-root /path/to/prepared/targeted_fractional_contribution_estimation/nist \
+  --data-root data/prepared/targeted_fractional_contribution_estimation/nist \
   --fold 1
 ```
 
@@ -83,8 +85,9 @@ Run all five folds:
 
 ```bash
 python -m scripts.run \
+  --output-dir runs/targeted-fractional-contribution-estimation \
   --config configs/targeted_fractional_contribution_estimation/nist.yaml \
-  --data-root /path/to/prepared/targeted_fractional_contribution_estimation/nist \
+  --data-root data/prepared/targeted_fractional_contribution_estimation/nist \
   --kfold
 ```
 

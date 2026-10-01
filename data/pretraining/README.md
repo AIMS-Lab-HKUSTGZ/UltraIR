@@ -23,7 +23,7 @@ for each source. For the Hugging Face dataset, for example:
 ```bash
 python -m pip install -U huggingface_hub
 hf download yusentan/UltraIR --repo-type dataset \
-  --local-dir /path/to/raw/UltraIR
+  --local-dir data/raw/UltraIR
 ```
 
 For Zenodo and Figshare, use the download controls on the linked record pages.
@@ -50,9 +50,9 @@ and creates the 17 functional-group multi-hot labels:
 
 ```bash
 python -m data.common.molecular \
-  --ir /path/to/source/ir.npy \
-  --smiles /path/to/source/smiles.npy \
-  --output-dir /path/to/prepared/source \
+  --ir data/source/ir.npy \
+  --smiles data/source/smiles.npy \
+  --output-dir data/prepared/source \
   --no-folds
 ```
 
@@ -72,10 +72,10 @@ from pathlib import Path
 import numpy as np
 
 roots = [
-    Path("/path/to/prepared/ultrair_md"),
-    Path("/path/to/prepared/irtomol"),
-    Path("/path/to/prepared/multimodal"),
-    Path("/path/to/prepared/qm9s"),
+    Path("data/prepared/ultrair_md"),
+    Path("data/prepared/irtomol"),
+    Path("data/prepared/multimodal"),
+    Path("data/prepared/qm9s"),
 ]
 names = ("ir_norm.npy", "fingerprint.npy", "functional_groups.npy")
 
@@ -98,7 +98,7 @@ for name in names:
     if len({arrays[name].dtype for arrays in sources}) != 1:
         raise ValueError(f"incompatible dtypes for {name}")
 
-out = Path("/path/to/prepared/pretraining")
+out = Path("data/prepared/pretraining")
 out.mkdir(parents=True, exist_ok=True)
 total_rows = sum(len(arrays[names[0]]) for arrays in sources)
 for name in names:
@@ -140,8 +140,8 @@ dependencies, CPU/GPU commands, resumable output, and failure logs.
 
 ```bash
 python -m data.pretraining.molecular_dynamics.run_many_ir_openmm \
-  --input /path/to/nonoverlapping_smiles.csv \
-  --output /path/to/md_ir.csv \
+  --input data/nonoverlapping_smiles.csv \
+  --output data/md_ir.csv \
   --gpus 0 --workers-per-gpu 1
 ```
 
@@ -149,12 +149,12 @@ Convert the generator output and prepare its molecular labels:
 
 ```bash
 python -m data.pretraining.molecular_dynamics.convert_output \
-  --input /path/to/md_ir.csv \
-  --output-dir /path/to/md_raw
+  --input data/md_ir.csv \
+  --output-dir data/md_raw
 python -m data.common.molecular \
-  --ir /path/to/md_raw/ir.npy \
-  --smiles /path/to/md_raw/smiles.npy \
-  --output-dir /path/to/prepared/ultrair_md \
+  --ir data/md_raw/ir.npy \
+  --smiles data/md_raw/smiles.npy \
+  --output-dir data/prepared/ultrair_md \
   --no-folds
 ```
 
@@ -170,12 +170,12 @@ the equal arithmetic mean:
 
 ```bash
 python -m data.pretraining.chemprop_ir.combine_predictions \
-  --predictions /path/to/predictions_model_a.csv /path/to/predictions_model_b.csv \
-  --output-dir /path/to/chemprop_ir_raw
+  --predictions runs/predictions_model_a.csv runs/predictions_model_b.csv \
+  --output-dir data/chemprop_ir_raw
 python -m data.common.molecular \
-  --ir /path/to/chemprop_ir_raw/ir.npy \
-  --smiles /path/to/chemprop_ir_raw/smiles.npy \
-  --output-dir /path/to/prepared/chemprop_ir \
+  --ir data/chemprop_ir_raw/ir.npy \
+  --smiles data/chemprop_ir_raw/smiles.npy \
+  --output-dir data/prepared/chemprop_ir \
   --no-folds
 ```
 
@@ -191,7 +191,7 @@ prepared directory explicitly:
 ```bash
 python -m scripts.pretrain \
   --config configs/pretraining/default.yaml \
-  --data-root /path/to/prepared/pretraining
+  --data-root data/prepared/pretraining
 ```
 
 The plain root must contain those three arrays, with identical first

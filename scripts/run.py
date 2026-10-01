@@ -451,6 +451,7 @@ def parse_args() -> argparse.Namespace:
             "bacterial_classification or bc"
         ),
     )
+    parser.add_argument("--output-dir", type=Path, help="Run directory for trained checkpoints and evaluation results")
     parser.add_argument("--mode", choices=["train_eval", "infer_eval"])
     parser.add_argument("--fold", type=parse_fold, help="Run fold 1-5 or the demo fold")
     parser.add_argument("--kfold", action="store_true", help="Run all configured folds")
@@ -526,6 +527,10 @@ def parse_args() -> argparse.Namespace:
 
 
 def apply_cli_overrides(cfg: dict[str, Any], args: argparse.Namespace) -> None:
+    if getattr(args, "output_dir", None) is not None:
+        output = args.output_dir.expanduser()
+        cfg.setdefault("train", {})["save_root"] = str(output / "checkpoints")
+        cfg.setdefault("results", {})["root"] = str(output / "results")
     if args.mode is not None:
         cfg.setdefault("run", {})["mode"] = args.mode
     if args.device is not None:

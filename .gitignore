@@ -5,5 +5,23 @@ __pycache__/
 .ruff_cache/
 .mypy_cache/
 results/
-checkpoints/
+checkpoints
 .cache/
+runs/
+.venv*/
+
+# Generated USPTO data caches
+data/uspto/raw/
+data/uspto/converted/
+data/uspto/prepared/
+data/uspto/pairs/
+data/uspto/source.json
+data/uspto-smoke/
+
+# Local packaging and user-provided datasets
+build/
+dist/
+data/raw/
+data/prepared/
+data/work/
+data/inputs/

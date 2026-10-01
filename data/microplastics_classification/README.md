@@ -28,16 +28,16 @@ stratified folds using the supplied seed:
 
 ```bash
 python -m data.common.labeled \
-  --ir /path/to/microplastics/ir.npy \
-  --labels /path/to/microplastics/labels.npy \
-  --output-dir /path/to/prepared/microplastics_classification \
+  --ir runs/microplastics/ir.npy \
+  --labels runs/microplastics/labels.npy \
+  --output-dir data/prepared/microplastics_classification \
   --stratify --k 5 --valid-fraction 0.1 --seed 42
 ```
 
 The prepared root contains:
 
 ```text
-/path/to/prepared/microplastics_classification/
+data/prepared/microplastics_classification/
   ir.npy, labels.npy, manifest.json
   fold-1/{train,valid,test}/{ir.npy,labels.npy}
   ...
@@ -56,6 +56,7 @@ Run the packaged example data:
 
 ```bash
 python -m scripts.run \
+  --output-dir runs/microplastics-classification \
   --task microplastics_classification \
   --fold demo
 ```
@@ -64,8 +65,9 @@ Run one full-data fold:
 
 ```bash
 python -m scripts.run \
+  --output-dir runs/microplastics-classification \
   --task microplastics_classification \
-  --data-root /path/to/prepared/microplastics_classification \
+  --data-root data/prepared/microplastics_classification \
   --fold 1
 ```
 
@@ -73,7 +75,8 @@ Run all available folds:
 
 ```bash
 python -m scripts.run \
+  --output-dir runs/microplastics-classification \
   --task microplastics_classification \
-  --data-root /path/to/prepared/microplastics_classification \
+  --data-root data/prepared/microplastics_classification \
   --kfold
 ```

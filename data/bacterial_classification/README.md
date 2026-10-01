@@ -28,16 +28,16 @@ partitions with an approximately 70/10/20 ratio and a configurable seed:
 
 ```bash
 python -m data.common.labeled \
-  --ir /path/to/bacterial/ir.npy \
-  --labels /path/to/bacterial/labels.npy \
-  --output-dir /path/to/prepared/bacterial_classification \
+  --ir runs/bacterial/ir.npy \
+  --labels runs/bacterial/labels.npy \
+  --output-dir data/prepared/bacterial_classification \
   --stratify --k 5 --valid-fraction 0.1 --seed 42
 ```
 
 The output contains the full normalized arrays, `manifest.json`, and:
 
 ```text
-/path/to/prepared/bacterial_classification/
+data/prepared/bacterial_classification/
   fold-1/{train,valid,test}/{ir.npy,labels.npy}
   ...
   fold-5/{train,valid,test}/{ir.npy,labels.npy}
@@ -54,6 +54,7 @@ Run the packaged example data with `--fold demo`:
 
 ```bash
 python -m scripts.run \
+  --output-dir runs/bacterial-classification \
   --task bacterial_classification \
   --fold demo
 ```
@@ -62,8 +63,9 @@ Run one prepared full-data fold by overriding the root:
 
 ```bash
 python -m scripts.run \
+  --output-dir runs/bacterial-classification \
   --task bacterial_classification \
-  --data-root /path/to/prepared/bacterial_classification \
+  --data-root data/prepared/bacterial_classification \
   --fold 1
 ```
 
@@ -71,8 +73,9 @@ Run all five folds:
 
 ```bash
 python -m scripts.run \
+  --output-dir runs/bacterial-classification \
   --task bacterial_classification \
-  --data-root /path/to/prepared/bacterial_classification \
+  --data-root data/prepared/bacterial_classification \
   --kfold
 ```
 

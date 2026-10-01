@@ -23,7 +23,8 @@ from .utils.training import AverageMeter, build_warmup_cosine_lambda, set_seed
 
 def _resolve_device(value: str) -> torch.device:
     if value.startswith("cuda") and not torch.cuda.is_available():
-        raise RuntimeError("CUDA was requested but is not available")
+        print(f"[pretrain] CUDA is unavailable; using CPU instead of {value!r}", flush=True)
+        return torch.device("cpu")
     return torch.device(value)
 
 

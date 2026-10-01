@@ -32,8 +32,8 @@ seed:
 
 ```bash
 python -m data.mixture_level_component_quantification.prepare \
-  --source-root /path/to/FTIR_and_Machine_Learning \
-  --output-dir /path/to/prepared/mixture_level_component_quantification \
+  --source-root data/FTIR_and_Machine_Learning \
+  --output-dir data/prepared/mixture_level_component_quantification \
   --seed 42
 ```
 
@@ -64,24 +64,32 @@ the same training fold according to the selected YAML.
 
 ## Run and cross-validation
 
-Run the packaged experimental or synthetic example:
+The experimental task initializes from the trained synthetic task. Run the
+synthetic demo first, then use its checkpoint directory for experimental
+adaptation:
 
 ```bash
 python -m scripts.run \
-  --config configs/mixture_level_component_quantification/experimental_four_component.yaml \
+  --output-dir runs/mixture-level-component-quantification \
+  --config configs/mixture_level_component_quantification/synthetic_four_component.yaml \
   --fold demo
 
 python -m scripts.run \
-  --config configs/mixture_level_component_quantification/synthetic_four_component.yaml \
+  --output-dir runs/mixture-level-component-quantification \
+  --config configs/mixture_level_component_quantification/experimental_four_component.yaml \
+  --ckpt runs/mixture-level-component-quantification/checkpoints/mixture_level_component_quantification/ultrair_pretrained_synthetic_four_component/fold-demo \
   --fold demo
 ```
 
-Run one prepared fold:
+For full-data adaptation, train the synthetic task on the corresponding
+prepared fold first. Then initialize the experimental task from that fold:
 
 ```bash
 python -m scripts.run \
+  --output-dir runs/mixture-level-component-quantification \
   --config configs/mixture_level_component_quantification/experimental_four_component.yaml \
-  --data-root /path/to/prepared/mixture_level_component_quantification \
+  --data-root data/prepared/mixture_level_component_quantification \
+  --ckpt runs/mixture-level-component-quantification/checkpoints/mixture_level_component_quantification/ultrair_pretrained_synthetic_four_component/fold-1 \
   --fold 1
 ```
 
@@ -90,7 +98,8 @@ with `--kfold`:
 
 ```bash
 python -m scripts.run \
+  --output-dir runs/mixture-level-component-quantification \
   --config configs/mixture_level_component_quantification/synthetic_four_component.yaml \
-  --data-root /path/to/prepared/mixture_level_component_quantification \
+  --data-root data/prepared/mixture_level_component_quantification \
   --kfold
 ```
