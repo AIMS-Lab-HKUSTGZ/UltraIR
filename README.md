@@ -419,8 +419,6 @@ outputs are saved in `runs/uspto/`.
 The terminal shows stage, task/fold, epoch/batch progress and estimated
 time remaining; per-fold logs are saved under `runs/uspto/logs/`.
 
-For a quick execution check, run
-`python -m scripts.uspto_pipeline --work-dir runs/uspto-smoke --smoke`.
 See the [complete USPTO guide](data/uspto/README.md) for storage requirements,
 staged execution, task selection, and completed-fold reuse.
 

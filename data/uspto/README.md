@@ -37,13 +37,10 @@ protocol. The dataset release can be cited as:
 ## One command on a GPU machine
 
 Run all commands from the UltraIR repository root. The full run stores data in
-`data/uspto/` and training outputs in `runs/uspto/`. Smoke checks use
-`data/uspto-smoke/` and `runs/uspto-smoke/`. Preparation examples in
-the other data guides use `data/raw/` and `data/prepared/` for local inputs
-and generated data. Input files must be obtained from the documented sources.
+`data/uspto/` and training outputs in `runs/uspto/`.
 
-Install `curl` and the fixed runtime with Python 3.11; choose a CUDA PyTorch wheel suitable
-for the driver before installing the remaining requirements:
+Install `curl` and use Python 3.11 with a CUDA driver compatible with the
+PyTorch version specified in `requirements.txt`:
 
 ```bash
 python -m pip install -e .
@@ -92,17 +89,7 @@ selected task and displays `estimating` until each unfinished task has a
 measured fold duration. These estimates reflect processing rates and elapsed
 time; they update as the run proceeds.
 
-## Short end-to-end verification
-
-```bash
-python -m scripts.uspto_pipeline --work-dir runs/uspto-smoke --smoke
-```
-
-`--smoke` uses the first 256 real source molecules, one epoch and fold 1, with
-a batch size of eight (one complete reference group for the pair sampler). All five tasks use their full model architectures and
-released pretraining weights. Structure decoding is shortened to 16 tokens
-and two beams/candidates. This provides a quick execution check. Full benchmark training uses
-`runs/uspto/` with the default epoch counts and decoding settings.
+## Task and fold selection
 
 For a single task or a subset of folds:
 
@@ -113,7 +100,6 @@ python -m scripts.uspto_pipeline \
 ```
 
 Task names are `fg`, `properties`, `structure`, `detection`, and `fraction`.
-`--epochs` is an explicit duration override for debugging or pilot runs.
 
 ## Separate preparation from GPU execution
 
@@ -137,8 +123,7 @@ starts training from its pretrained encoder again.
 ## Reuse existing inputs
 
 `--data-dir` selects the dataset cache independently of `--work-dir`,
-so multiple runs can share prepared inputs. Smoke checks use a separate
-data directory automatically.
+so multiple runs can share prepared inputs.
 
 Pretrained encoders are stored in the repository's `checkpoints/pretraining/`
 by default, matching the checkpoint download commands in the main README.
@@ -166,16 +151,13 @@ generative adapter.
 - Preserve shard order and row alignment, ID, SMILES, spectrum, labels, and
   original source-row indices. Invalid SMILES are removed together with their
   spectra and labels.
-- Crop the original axis to 400–4000 cm⁻¹. For compatibility with the existing
-  USPTO preparation, interpolate between the actual first/last retained source
-  points (approximately 400.31696 and 3999.8335 cm⁻¹) to 3,600 samples and apply
-  per-spectrum min-max normalization. The model resizes to 1,792 points using
-  the repository's legacy cubic resize path.
-- Generate the existing ordered 17 functional groups, 2,048-bit radius-two
-  Morgan fingerprints, molecular formulas and 11 RDKit properties. Pin RDKit
-  to **2025.03.6**: RDKit 2026 changes hydrogen-bond acceptor counts and therefore
-  changes the property labels. Pin NumPy and OpenCV as well as the training
-  dependencies in `requirements.txt`.
+- Crop the original axis to 400–4000 cm⁻¹. Interpolate between the first and
+  last retained source points (approximately 400.31696 and 3999.8335 cm⁻¹) to
+  3,600 samples and apply per-spectrum min-max normalization. The model resizes
+  to 1,792 points using cubic interpolation.
+- Generate the ordered 17 functional-group labels, 2,048-bit radius-two Morgan
+  fingerprints, molecular formulas and 11 molecular properties using
+  **RDKit 2025.03.6**. Install the pinned dependencies in `requirements.txt`.
 - Use one deterministic scaffold split for all tasks: five disjoint test
   folds, approximately 70/10/20 training/validation/test, seed 42. Non-empty
   Bemis–Murcko scaffolds remain intact and are checked for overlap in every
